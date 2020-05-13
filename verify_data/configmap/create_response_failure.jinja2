@@ -1,0 +1,27 @@
+{
+"kind": "Status",
+"apiVersion": "v1",
+"metadata": {},
+"status": "Failure",
+"message": "{{ message }}",
+"reason": "{{ reason }}",
+{% if details %}
+    "details": {
+    {% if configmap_name %}
+    "name": "{{ configmap_name }}",
+    {% endif %}
+    "kind": "{{ kind_2|default("ConfigMap") }}",
+    {% if causes %}
+        "causes": [
+        {
+        "reason": "{{ reason_2 }}",
+        "message": "{{ message_2 }}",
+        "field": "{{ field }}"
+        }
+        ]
+    {% endif %}
+    },
+{% else %}
+{% endif %}
+"code": {{ status_code|default(422) }}
+}

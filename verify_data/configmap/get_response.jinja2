@@ -1,0 +1,24 @@
+{
+    "apiVersion": "v1",
+    "data": {
+{%- if description == "conf文件1" %}
+      "default.conf": "server {\n        listen       80;\n        server_name  localhost;\n\n        root /www;\n        index index.php index.html index.htm;\n\n        location / {\n            try_files alauda.cn alauda.cn/ /index.php;\n        }\n        location = /redirect {\n\n        }\n\n        location ~ \\.php$ {\n            fastcgi_pass   127.0.0.1:9000;\n            fastcgi_index  index.php;\n            include         fastcgi_params;\n            fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;\n            fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;\n        }\n    }"
+{% elif description == "conf文件2" %}
+      "default2.conf": "server {\n        listen       8090;\n        server_name  localhost;\n\n        root /www;\n        index index.php index.html index.htm;\n\n        location / {\n            try_files alauda.cn alauda.cn/ /index.php;\n        }\n        location = /redirect {\n\n        }\n\n        location ~ \\.php$ {\n            fastcgi_pass   127.0.0.1:9000;\n            fastcgi_index  index.php;\n            include         fastcgi_params;\n            fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;\n            fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;\n        }\n    }"
+{% elif description == "多个配置项" %}
+      "{{ configmap_key }}": "{{ configmap_value }}",
+      "default.conf": "server {\n        listen       80;\n        server_name  localhost;\n\n        root /www;\n        index index.php index.html index.htm;\n\n        location / {\n            try_files alauda.cn alauda.cn/ /index.php;\n        }\n        location = /redirect {\n\n        }\n\n        location ~ \\.php$ {\n            fastcgi_pass   127.0.0.1:9000;\n            fastcgi_index  index.php;\n            include         fastcgi_params;\n            fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;\n            fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;\n        }\n    }"
+{% else %}
+      "{{ configmap_key }}": "{{ configmap_value }}"
+{%- endif %}
+    },
+    "kind": "ConfigMap",
+    "metadata": {
+      "name": "{{ configmap_name }}",
+      "namespace": "{{ namespace }}",
+      "selfLink": "/api/v1/namespaces/{{ namespace }}/configmaps/{{ configmap_name }}",
+      "annotations": {
+        "resource.{{ default_label }}/description": "{{ description }}"
+    }
+  }
+}

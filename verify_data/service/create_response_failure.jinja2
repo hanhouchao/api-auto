@@ -1,0 +1,27 @@
+{
+    "kind": "Status",
+    "apiVersion": "v1",
+    "metadata": {},
+    "status": "Failure",
+    "message": "{{ message }}",
+    "reason": "{{ reason }}",
+    {% if details %}
+    "details": {
+        {% if service_name %}
+            "name": "{{ service_name }}",
+        {% endif %}
+        "kind": "{{ kind_2|default("Service") }}",
+        {% if causes %}
+        "causes": [
+                    {
+                        "reason": "{{ reason_2 }}",
+                        "message": "{{ message_2 }}",
+                        "field": "{{ field }}"
+                    }
+        ]
+         {% endif %}
+    {% else %}
+    {% endif %}
+    },
+    "code": {{ status_code|default(422) }}
+}

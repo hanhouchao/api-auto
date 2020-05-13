@@ -1,0 +1,44 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: {{ ingress_name }}
+  namespace: {{ namespace }}
+  selfLink: /apis/extensions/v1beta1/namespaces/{{ namespace }}/ingresses/{{ ingress_name }}
+  {% if resourceVersion %}
+  resourceVersion: '{{ resourceVersion }}'
+  {% endif %}
+  annotations:
+    kubernetes.io/ingress.class: ''
+spec:
+  {% if secret_name %}
+  tls:
+    - hosts:
+        - '{{ host }}'
+      secretName: {{ secret_name }}
+  {% endif %}
+  rules:
+    {% if ruledata == '无数据' %}
+    - {}
+    {% endif %}
+    {% if ruledata == '一组数据' or ruledata == '多组数据' %}
+    - {% if host %}host: {{ host }} {% endif %}
+      {% if service_name_1 %}
+      http:
+        paths:
+          - path: {{ path|default("/a1") }}
+            backend:
+              serviceName: {{ service_name_2 }}
+              servicePort: {{ service_port|default(1) }}
+      {% endif %}
+    {% endif %}
+    {% if ruledata == '多组数据' %}
+    - {% if host2 %}host: {{ host2 }} {% endif %}
+      {% if service_name2_1 %}
+      http:
+        paths:
+          - path: {{ path2|default("/a2") }}
+            backend:
+              serviceName: {{ service_name2_2 }}
+              servicePort: 2
+      {% endif %}
+    {% endif %}

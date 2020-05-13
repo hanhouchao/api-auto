@@ -1,0 +1,15 @@
+{
+  "apiVersion": "crd.alauda.io/v2",
+  "kind": "Domain",
+  "metadata": {
+    "labels": {
+      "cluster.{{ default_label }}/name": "{{ region_name }}"
+    },
+    "name": "{{ domain_name }}",
+    "selfLink": "/apis/crd.alauda.io/v2/domains/{{ domain_name }}"
+  },
+  "spec": {
+    "kind": "{{ type }}",
+    "name": "{{ domain_real_name }}"
+  }
+}

@@ -1,0 +1,55 @@
+namespace:
+  apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: {{ namespace_name }}
+    annotations:
+      {{ default_label }}/display-name: {{ display_name }}
+{%- if morelabel == "True" %}
+    labels:
+      {{ default_label }}/cluster: {{ cluster }}
+      {{ default_label }}/project: {{ project }}
+      {{ key1|default("key1") }}: {{ value1|default("value1") }}
+      morelabel: mylabel
+{%- else %}
+    labels:
+      {{ default_label }}/cluster: {{ cluster }}
+      {{ default_label }}/project: {{ project }}
+{%- endif %}
+resourcequota:
+  apiVersion: v1
+  kind: ResourceQuota
+  metadata:
+    name: default
+    namespace: {{ namespace_name }}
+  spec:
+{%- if ResourceQuota == "True" %}
+    hard:
+      requests.cpu: '{{ requests_cpu | default("100") }}'
+      limits.cpu: '{{ limits_cpu | default("100") }}'
+      requests.memory: {{ requests_mem | default("100Gi") }}
+      limits.memory: {{ limits_mem | default("100Gi") }}
+      requests.storage: {{ requests_storage | default("100Gi") }}
+      persistentvolumeclaims: '{{ pvc | default("100") }}'
+      pods: '{{ pod | default("100") }}'
+{%- else %}
+    hard: {}
+{%- endif %}
+limitrange:
+  apiVersion: v1
+  kind: LimitRange
+  metadata:
+    name: default
+    namespace: {{ namespace_name }}
+  spec:
+    limits:
+    - type: Container
+      default:
+        cpu: {{ limitRange_default_cpu | default("100m") }}
+        memory: {{ limitRange_default_mem | default("100Mi") }}
+      defaultRequest:
+        cpu: {{ limitRange_request_cpu | default("100m") }}
+        memory: {{ limitRange_request_mem | default("100Mi") }}
+      max:
+        cpu: '{{ max_cpu | default("1") }}'
+        memory: {{ max_mem | default("1Gi") }}

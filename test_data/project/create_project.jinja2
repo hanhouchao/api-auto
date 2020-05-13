@@ -1,0 +1,34 @@
+{
+    "apiVersion": "auth.alauda.io/v1",
+    "kind": "Project",
+    "metadata": {
+        "annotations": {
+            "{{ default_label }}/description": "{{ description }}",
+            "{{ default_label }}/display-name": "{{ display_name }}"
+       },
+        "labels": {
+            "{{ default_label }}/project.level": "1",
+            "{{ default_label }}/project.parent": ""
+       },
+        "name": "{{ project_name }}",
+        "namespace": ""
+   },
+    "spec": {
+        "clusters": [
+           {%- for region in regions  %}
+           {
+                "name": "{{ region }}",
+                "quota": {
+                    "limits.cpu": 200",
+                    "limits.memory": "200Gi",
+                    "persistentvolumeclaims": "200",
+                    "pods": "200",
+                    "requests.cpu": "200",
+                    "requests.memory": "200Gi",
+                    "requests.storage": "200Gi"
+                }
+           }{%- if not loop.last %},{%- endif %}
+           {%- endfor %}
+       ]
+   }
+}

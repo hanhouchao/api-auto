@@ -1,0 +1,10 @@
+apiVersion: crd.alauda.io/v2
+kind: Domain
+metadata:
+  labels:
+    cluster.{{ default_label }}/name: '{{ region_name }}'
+    project.{{ default_label }}/name: '{{ project_name }}'
+  name: "{{ timestamp }}"
+spec:
+  kind: {{ kind }}
+  name: {{ name }}

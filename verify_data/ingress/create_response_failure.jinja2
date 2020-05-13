@@ -1,0 +1,28 @@
+{
+    "kind": "Status",
+    "apiVersion": "v1",
+    "metadata": {},
+    "status": "Failure",
+    "message": "{{ message }}",
+    "reason": "{{ reason }}",
+    {% if detail_hidden %}
+        {% else %}
+        "details": {
+            {% if name %}
+                "name": "{{ name }}",
+            {% endif %}
+            "group": "extensions",
+            "kind": "{{ kind2|default("Ingress") }}",
+            {% if causes %}
+            "causes": [
+                        {
+                            "reason": "{{ reason2 }}",
+                            "message": "{{ message2 }}",
+                            "field": "{{ field }}"
+                        }
+            ]
+             {% endif %}
+    },
+    {% endif %}
+    "code": {{ code }}
+}

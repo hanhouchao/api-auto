@@ -1,0 +1,36 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "{{ service_name }}",
+    "namespace": "{{ namespace }}",
+    "selfLink": "/api/v1/namespaces/{{ namespace }}/services/{{ service_name }}",
+  },
+  "spec": {
+    "ports": [
+    {%- if portdata == '一组数据' or portdata == '多组数据' %}
+      {
+        "name": {{ p_name_1|default('tcp') }}-{{ port_1|default('1') }}-{{  targetPort_1|default('1') }},
+        "protocol": {{ protocol_1|default('TCP') }},
+        "port": {{ port_1|default(1)}},
+        "targetPort": {{ targetPort_1|default(1) }}
+      },
+    {%- endif %}
+    {%- if portdata == '多组数据' %}
+    {
+        "name": {{ p_name_2|default('tcp') }}-{{ port_2|default('2') }}-{{ targetPort_2|default('2') }},
+        "protocol": {{ protocol_2|default('TCP') }},
+        "port": {{ port_2|default(2) }},
+        "targetPort": {{ targetPort_2|default(2) }}
+      },
+    {%- endif %}
+    ],
+    {%- if selector %}
+    "selector": {
+      "key": "value"
+    },
+    {%- endif %}
+    "type": "{{ type }}",
+    "sessionAffinity": "{{ sessionAffinity }}"
+  }
+}
