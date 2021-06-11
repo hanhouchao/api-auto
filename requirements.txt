@@ -6,7 +6,7 @@ pytest-rerunfailures==8.0
 flake8==3.7.9
 pyyaml==5.3.1
 python-ldap==3.1.0
-websockets==8.1
+websockets==9.1
 asyncio==3.4.3
 jinja2==2.11.1
 alauda-xdist==1.30.1
